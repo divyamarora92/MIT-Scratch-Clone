@@ -1,11 +1,12 @@
 .motion-component{
     display: block;
-    margin: 0 55px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 .move-motion{
     color: white;
     height: 30px;
-    width: 200px;
+    width: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,4 +19,5 @@
 .motion-inputs{
     border-radius: 10px;
     padding-left: 5px;
+    color: black;
 }

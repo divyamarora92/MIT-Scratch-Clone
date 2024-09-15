@@ -1,43 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import Draggable from 'react-draggable';
-import './AnimationArea.css';
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import Draggable from "react-draggable";
+import "./AnimationArea.css";
+import { swapAnimation } from "../../redux/features/Sprite/spriteSlice";
 
 const AnimationArea = () => {
   const sprites = useSelector((state) => state.sprite.sprites);
-  const selectedSprite = useSelector((state) => state.sprite.selectedSprite);
   const dispatch = useDispatch();
 
   const [spriteStates, setSpriteStates] = useState({});
 
   useEffect(() => {
-    const updatedStates = sprites?.reduce((acc, sprite) => {
-      const randomPosition = () => ({
-        top: Math.random() * 450, // Assuming container height is 500px with some margin
-        left: Math.random() *400, // Assuming container width is 1000px with some margin
-      });
-      if (!acc[sprite.id]) {
-        acc[sprite.id] = {
-          ...randomPosition(),
-          rotation: 0,
-        };
-      }
-      return acc;
-    }, { ...spriteStates });
+    const updatedStates = sprites?.reduce(
+      (acc, sprite) => {
+        const randomPosition = () => ({
+          top: Math.random() * 50,
+          left: Math.random() * 50,
+        });
+        if (!acc[sprite.id]) {
+          acc[sprite.id] = {
+            ...randomPosition(),
+            rotation: 0,
+          };
+        }
+        return acc;
+      },
+      { ...spriteStates }
+    );
 
     setSpriteStates(updatedStates);
   }, [sprites]);
 
   const handleAnimation = (sprite) => {
-    selectedSprite?.animations?.forEach((animation, index) => {
-      
+    sprite.animations?.forEach((animation, index) => {
       setTimeout(() => {
-        if (animation.name === 'Move') {
+        if (animation.name === "Move") {
           handleMoveSteps(sprite.id, animation.value);
-        } else if (animation.name === 'Turn') {          
+        } else if (animation.name === "Turn") {
           handleTurnDegrees(sprite.id, animation.value);
-        } else if (animation.type === 'goto') {
-          handleGoTo(sprite.id, animation.x, animation.y);
+        } else if (animation.name === "Go to") {
+          handleGoTo(sprite.id, animation.value.x, animation.value.y);
         }
       }, index * 500); // Delay each animation by 500ms
     });
@@ -56,7 +58,7 @@ const AnimationArea = () => {
   const handleTurnDegrees = (id, degrees) => {
     setSpriteStates((prevState) => {
       const newState = { ...prevState };
-      newState[id].rotation += Number(degrees);
+      newState[id].rotation = (newState[id].rotation + (Number(degrees) % 360));
       checkForCollisions(newState);
       return newState;
     });
@@ -72,8 +74,10 @@ const AnimationArea = () => {
     });
   };
 
-  const handleRun = () => {
-    handleAnimation(selectedSprite);
+  const handleRunAllAnimations = () => {
+    sprites.forEach((sprite) => {
+      handleAnimation(sprite);
+    });
   };
 
   const handleDrag = (e, ui, id) => {
@@ -125,17 +129,19 @@ const AnimationArea = () => {
   };
 
   const swapAnimations = (id1, id2) => {
-    
-    // dispatch({
-    //   type: 'SWAP_ANIMATIONS',
-    //   payload: { id1, id2 },
-    // });
+    dispatch(swapAnimation({ id1, id2 }))
+    handleRunAllAnimations();
   };
 
   return (
     <div className="animation-area-container">
-      {sprites?.map((sprite) => {
-        const style = spriteStates[sprite.id] || { top: 0, left: 0, rotation: 0 };
+      {sprites.map((sprite) => {
+        const style = spriteStates[sprite.id] || {
+          top: 0,
+          left: 0,
+          rotation: 0,
+        };
+
         return (
           <Draggable
             key={sprite.id}
@@ -146,11 +152,13 @@ const AnimationArea = () => {
           >
             <div
               style={{
-                position: 'absolute',
-                transform: `rotate(${style.rotation}deg)`,
-                transition: 'transform 0.5s',
-                fontSize: '1rem',
-                cursor: 'move',
+                position: "absolute",
+                top: `${style.top}px`,
+                left: `${style.left}px`,
+                transition: "transform 0.5s",
+                fontSize: "1rem",
+                cursor: "move",
+                transform: `rotate(${style.rotation}deg) translate(-50%, -50%)`,
               }}
               className="sprite"
             >
@@ -159,7 +167,9 @@ const AnimationArea = () => {
           </Draggable>
         );
       })}
-      <button className="animation-run-button" onClick={handleRun}>Run</button>
+      <button className="animation-run-button" onClick={handleRunAllAnimations}>
+        Run
+      </button>
     </div>
   );
 };

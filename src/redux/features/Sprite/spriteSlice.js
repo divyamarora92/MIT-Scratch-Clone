@@ -1,4 +1,4 @@
-import { createSlice} from '@reduxjs/toolkit';
+import { createSlice,current} from '@reduxjs/toolkit';
 
 const initialState = {
   sprites: [],
@@ -21,16 +21,16 @@ export const spriteSlice = createSlice({
       state.sprites.push(newSprite);
       state.nextSpriteId += 1;
     },
-    selectedSprite: (state, action) => {
-      const spriteId = action.payload;
-      let sprite = state.sprites.find(sprite => sprite.id === spriteId);
-      state.selectedSprite = { ...sprite };
-    },
     removeSprite: (state, action) => {
       state.sprites = state.sprites.filter(sprite => sprite.id !== action.payload.id);
       if (state.selectedSprite.id === action.payload.id) {
         state.selectedSprite = {};
       }
+    },
+    selectedSprite: (state, action) => {
+      const spriteId = action.payload;
+      let sprite = state.sprites.find(sprite => sprite.id === spriteId);
+      state.selectedSprite = { ...sprite };
     },
     addAnimation: (state, action) => {
       const { selectedSpriteId, droppedItem } = action.payload;
@@ -73,9 +73,22 @@ export const spriteSlice = createSlice({
         }
       }
     },
+    swapAnimation: (state, action) => {
+      
+      const { id1, id2 } = action.payload;
+      
+      const sprite1 = state.sprites.filter(sprite => sprite.id === id1);
+      const sprite2 = state.sprites.filter(sprite => sprite.id === id2);
+
+      if (sprite1 && sprite2) {
+        const temp = sprite1.animations;
+        sprite1.animations = sprite2.animations;
+        sprite2.animations = temp;
+      }
+    },
   },
 });
 
-export const { addSprite, selectedSprite, addAnimation, updateAnimation, removeAnimation } = spriteSlice.actions;
+export const { addSprite, selectedSprite, addAnimation, updateAnimation, removeAnimation,removeSprite ,swapAnimation} = spriteSlice.actions;
 
 export default spriteSlice.reducer;

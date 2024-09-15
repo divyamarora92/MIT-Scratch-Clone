@@ -6,6 +6,8 @@ import { removeAnimation } from "../../redux/features/Sprite/spriteSlice";
 const MotionComponent = () => {
   const [steps, setSteps] = useState();
   const [degree, setDegree] = useState();
+  const [x, setX] = useState();
+  const [y, setY] = useState();
   const dispatch = useDispatch();
 
   const handleDragStart = (event, item) => {
@@ -32,7 +34,7 @@ const MotionComponent = () => {
   const items = [
     { id: 1, name: "Move", value: steps },
     { id: 2, name: "Turn", value: degree },
-    { id: 3, name: "Go to" },
+    { id: 3, name: "Go to", value:{x:x,y:y}},
     { id: 4, name: "Repeat" },
     // Add more items as needed
   ];
@@ -52,25 +54,55 @@ const MotionComponent = () => {
         >
           <p>{item.name}</p>
           {item.name === "Move" && (
-            <input
-              className="motion-inputs"
-              type="text"
-              size="2"
-              style={{ outline: "none" }}
-              value={steps}
-              onChange={(e) => setSteps(e.target.value)}
-            />
+            <>
+              <input
+                className="motion-inputs"
+                type="text"
+                size="2"
+                style={{ outline: "none" }}
+                value={steps}
+                onChange={(e) => setSteps(e.target.value)}
+              />
+              <p>Steps</p>
+            </>
           )}
+
           {item.name === "Turn" && (
-            <input
-              className="motion-inputs"
-              type="text"
-              size="2"
-              style={{ outline: "none" }}
-              value={degree}
-              onChange={(e) => setDegree(e.target.value)}
-            />
+            <>
+              <input
+                className="motion-inputs"
+                type="text"
+                size="2"
+                style={{ outline: "none" }}
+                value={degree}
+                onChange={(e) => setDegree(e.target.value)}
+              />
+              <p>Degrees</p>
+            </>
           )}
+          {item.name === "Go to" && (
+            <>
+              <input
+                className="motion-inputs"
+                type="text"
+                size="2"
+                style={{ outline: "none" }}
+                value={x}
+                onChange={(e) => setX(e.target.value)}
+              />
+              <input
+                className="motion-inputs"
+                type="text"
+                size="2"
+                style={{ outline: "none" }}
+                value={y}
+                onChange={(e) => setY(e.target.value)}
+              />
+
+            </>
+          )
+
+          }
         </div>
       ))}
     </div>

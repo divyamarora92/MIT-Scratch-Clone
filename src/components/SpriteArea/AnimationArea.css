@@ -6,6 +6,7 @@
     align-items: center;
     color: white;
     border-radius: 50%;
+    transform: rotate(var(--rotate-deg, 0deg)) translate(var(--left),var(--top))!important;
   }
   .animation-area-container {
     position: relative;

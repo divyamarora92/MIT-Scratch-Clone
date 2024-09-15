@@ -1,26 +1,70 @@
+.animation-area-container {
+  height: 60%;
+  background-color: white;
+  border-radius: 10px;
+}
+.add-sprite-container {
+  margin-top: 10px;
+  height: 40%;
+  background-color: white;
+  border-radius: 10px;
+  overflow: overlay;
+}
+.sprite-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.add-sprite-btn img {
+  height: 60px;
+  width: 60px;
+  margin: 0 10px;
+  padding: 5px;
+  margin: 10px;
+  mix-blend-mode: hard-light;
+}
 
-.animation-area-container{
-    height: 70%;
-    background-color: white;
-    border-radius: 10px;
+.sprite-item {
+  margin: 10px;
+  display: flex;
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
 }
-.add-sprite-container{
-    margin-top: 10px;
-    height: 30%;
-    background-color: white;
-    border-radius: 10px;
-}
-.add-sprite-btn img{
-    height: 60px;
-    width: 60px;
-    margin: 0 10px;
-    padding:5px;
-    margin: 10px;
-    mix-blend-mode: hard-light;    
 
+.sprite-btn {
+  margin: 0 10px;
+  padding: 5px;
+  padding: 0;
 }
-.sprite-btn{
-    
-    margin: 0 10px;
-    padding:5px;
+
+.sprite-btn img {
+  width: 60px;
+  height: 60px;
+}
+
+.delete-btn {
+  border-radius: 50%;
+  color: red;
+  width: 30px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 40px;
+}
+.delete-btn img {
+  border: 1px solid black;
+  border-radius: 50%;
+  background-color: #9669fc;
+  margin-top: -16px;
+  margin-right: -10px;
+}
+
+.delete-btn:hover {
+  color: darkred;
+}
+.addSelected {
+ border: 2px solid #9669fc;
+  border-radius: 5px;
 }

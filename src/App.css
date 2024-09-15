@@ -1,16 +1,15 @@
 .App{
   height: 100vh;
   /* background-color: #e7f0fe; */
-  padding: 20px;
+  /* padding: 20px; */
 
 }
 .app-container{
-  padding: 20px;
-  height: 100%;
+  /* padding: 20px; */
+  height: 92%;
   box-sizing: border-box;
   display: flex;
   background-color: #e7f0fe;
-  border-radius: 20px;
 }
 .motion-area{
   display: flex;
