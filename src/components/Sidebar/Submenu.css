@@ -1,0 +1,14 @@
+.submenu {
+  width:80%;
+  border: 1px solid lightgrey;
+  padding: 15px;
+}
+
+.submenu ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.submenu li {
+  padding: 8px 12px;
+}
