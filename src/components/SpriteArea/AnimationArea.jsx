@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Draggable from "react-draggable";
 import "./AnimationArea.css";
-import { transform } from "framer-motion";
+import { swapAnimation } from "../../redux/features/Sprite/spriteSlice";
 
 const AnimationArea = () => {
   const sprites = useSelector((state) => state.sprite.sprites);
@@ -33,8 +33,7 @@ const AnimationArea = () => {
   }, [sprites]);
 
   const handleAnimation = (sprite) => {
-    selectedSprite?.animations?.forEach((animation, index) => {
-      console.log(animation);
+    sprite?.animations?.forEach((animation, index) => {
 
       setTimeout(() => {
         if (animation.name === "Move") {
@@ -44,7 +43,7 @@ const AnimationArea = () => {
         } else if (animation.name === "Go to") {
           handleGoTo(sprite.id, animation.value.x, animation.value.y);
         }
-      }, index * 500); // Delay each animation by 500ms
+      }, index * 500); 
     });
   };
 
@@ -78,14 +77,17 @@ const AnimationArea = () => {
   };
 
   const handleRun = () => {
-    handleAnimation(selectedSprite);
+    sprites.forEach((sprite)=>{
+      handleAnimation(sprite)
+    })
+    
   };
 
   const handleDrag = (e, ui, id) => {
     setSpriteStates((prevState) => {
       const newState = { ...prevState };
-      const containerWidth = 1000 - 50; // Container width minus sprite width
-      const containerHeight = 500 - 50; // Container height minus sprite height
+      const containerWidth = 1000 - 50; 
+      const containerHeight = 500 - 50; 
       newState[id].left = Math.max(0, Math.min(ui.x, containerWidth));
       newState[id].top = Math.max(0, Math.min(ui.y, containerHeight));
       checkForCollisions(newState);
@@ -96,8 +98,8 @@ const AnimationArea = () => {
   const handleStop = (e, ui, id) => {
     setSpriteStates((prevState) => {
       const newState = { ...prevState };
-      const containerWidth = 1000 - 50; // Container width minus sprite width
-      const containerHeight = 500 - 50; // Container height minus sprite height
+      const containerWidth = 1000 - 50;
+      const containerHeight = 500 - 50; 
       newState[id].left = Math.max(0, Math.min(ui.x, containerWidth));
       newState[id].top = Math.max(0, Math.min(ui.y, containerHeight));
       checkForCollisions(newState);
@@ -120,7 +122,7 @@ const AnimationArea = () => {
   };
 
   const isColliding = (sprite1, sprite2) => {
-    const size = 50; // Assuming all sprites are 50x50px
+    const size = 50; 
     return !(
       sprite1.left + size < sprite2.left ||
       sprite1.left > sprite2.left + size ||
@@ -130,10 +132,8 @@ const AnimationArea = () => {
   };
 
   const swapAnimations = (id1, id2) => {
-    // dispatch({
-    //   type: 'SWAP_ANIMATIONS',
-    //   payload: { id1, id2 },
-    // });
+    dispatch(swapAnimation(id1,id2));
+    handleRun();
   };
 
   return (
@@ -149,16 +149,14 @@ const AnimationArea = () => {
           "--top":`${style.top}px`,
           "--left":`${style.left}px`
         };
-        console.log(cssVariables);
         
-
         return (
           <Draggable
             key={sprite.id}
             position={{ x: style.left, y: style.top }}
             onDrag={(e, ui) => handleDrag(e, ui, sprite.id)}
             onStop={(e, ui) => handleStop(e, ui, sprite.id)}
-            bounds="parent" // Ensures the sprite stays within the parent container
+            bounds="parent" 
           >
             <div
               style={{
